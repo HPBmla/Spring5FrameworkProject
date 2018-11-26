@@ -4,17 +4,18 @@ import javax.persistence.*;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 @Entity
 public class Author {
 
     private String firstName;
     private String lastName;
-    @ManyToMany
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private  Long id;
 
     public Author()
     {
@@ -56,14 +57,34 @@ public class Author {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id == author.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
+    @Override
+    public String toString() {
+        return "Author{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", books=" + books +
+                ", id=" + id +
+                '}';
+    }
 }
